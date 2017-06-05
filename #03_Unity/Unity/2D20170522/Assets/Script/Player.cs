@@ -17,10 +17,13 @@ public class Player : MonoBehaviour {
 
     public GameObject bullet;
 
+    public new Renderer renderer;
+
     // Use this for initialization
     void Start () {
         anim = GetComponent<Animator>();
         rigidbody2D = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<Renderer>();
     }
 
     void Update()
@@ -117,4 +120,40 @@ public class Player : MonoBehaviour {
         }
 
     }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        Debug.Log("Col");
+        if (col.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Col");
+
+            StartCoroutine("Damage");
+        }
+
+    }
+
+    IEnumerator Damage()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerDamege");
+        
+        //while文を10回ループ：10回点滅   
+        int count = 10;
+        while (count > 0)
+        {
+            //透明にする
+            renderer.material.color = new Color (1,1,1,0);
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
+            //元に戻す
+            renderer.material.color = new Color (1,1,1,1);
+            //0.05秒待つ
+            yield return new WaitForSeconds(0.05f);
+            count--;
+        }
+
+        //レイヤーをPlayerに戻す 
+        gameObject.layer = LayerMask.NameToLayer("Player");
+    }
+
 }
