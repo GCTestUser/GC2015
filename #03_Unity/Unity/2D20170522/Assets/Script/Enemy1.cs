@@ -17,6 +17,7 @@ public class Enemy1 : MonoBehaviour
     void Update()
     {
         rigidbody2D.velocity = new Vector2(speed, rigidbody2D.velocity.y);
+        Debug.Log("EnemyPos="+transform.position);
     }
 
     void OnTriggerEnter2D(Collider2D col)
